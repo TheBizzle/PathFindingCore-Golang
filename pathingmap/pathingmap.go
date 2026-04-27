@@ -32,6 +32,18 @@ type PathingMap struct {
 	grid PathingGrid
 }
 
+func (pmap PathingMap) maxCoord() Coordinate {
+	return slices.MaxFunc(slices.Collect(maps.Keys(pmap.grid)), coordinate.Compare)
+}
+
+func (pmap PathingMap) Height() uint {
+	return pmap.maxCoord().Y + 1
+}
+
+func (pmap PathingMap) Width() uint {
+	return pmap.maxCoord().X + 1
+}
+
 func (pmap PathingMap) String() string {
 	if len(pmap.grid) > 0 {
 		coords := slices.Collect(maps.Keys(pmap.grid))
