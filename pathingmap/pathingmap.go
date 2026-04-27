@@ -35,10 +35,8 @@ type PathingMap struct {
 func (pmap PathingMap) String() string {
 	if len(pmap.grid) > 0 {
 		coords := slices.Collect(maps.Keys(pmap.grid))
-
 		slices.SortFunc(coords, coordinate.Compare)
-
-		maxCoord := slices.MaxFunc(coords, coordinate.Compare)
+		maxCoord := coords[len(coords)-1]
 
 		lines := make([]string, 0, maxCoord.Y)
 		strBuffer := new(strings.Builder)
