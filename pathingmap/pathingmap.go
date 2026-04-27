@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/TheBizzle/PathFindingCore-Golang/internal/coordinate"
-	"github.com/TheBizzle/PathFindingCore-Golang/internal/interpreter"
-	"github.com/TheBizzle/PathFindingCore-Golang/internal/status"
-	"github.com/TheBizzle/PathFindingCore-Golang/internal/terrain"
+	coord "github.com/TheBizzle/PathFindingCore-Golang/internal/coordinate"
+	interp "github.com/TheBizzle/PathFindingCore-Golang/internal/interpreter"
+	status "github.com/TheBizzle/PathFindingCore-Golang/internal/status"
+	terrain "github.com/TheBizzle/PathFindingCore-Golang/internal/terrain"
 )
 
 const (
@@ -20,11 +20,11 @@ const (
 )
 
 type (
-	Breadcrumb       = coordinate.Breadcrumb
-	Coordinate       = coordinate.Coordinate
-	PathingGrid      = interpreter.PathingGrid
-	PathingMapData   = interpreter.PathingMapData
-	PathingMapString = interpreter.PathingMapString
+	Breadcrumb       = coord.Breadcrumb
+	Coordinate       = coord.Coordinate
+	PathingGrid      = interp.PathingGrid
+	PathingMapData   = interp.PathingMapData
+	PathingMapString = interp.PathingMapString
 	RunResult        = status.RunResult
 )
 
@@ -33,7 +33,7 @@ type PathingMap struct {
 }
 
 func (pmap PathingMap) maxCoord() Coordinate {
-	return slices.MaxFunc(slices.Collect(maps.Keys(pmap.grid)), coordinate.Compare)
+	return slices.MaxFunc(slices.Collect(maps.Keys(pmap.grid)), coord.Compare)
 }
 
 func (pmap PathingMap) Height() uint {
