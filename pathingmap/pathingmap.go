@@ -13,27 +13,39 @@ import (
 )
 
 const (
-	goal  = terrain.Goal
-	path  = terrain.Path
-	query = terrain.Query
-	self  = terrain.Self
+	FailedRun     = status.FailedRun
+	SuccessfulRun = status.SuccessfulRun
+	goal          = terrain.Goal
+	path          = terrain.Path
+	query         = terrain.Query
+	self          = terrain.Self
 )
 
 type (
 	Breadcrumb       = coord.Breadcrumb
 	Coordinate       = coord.Coordinate
+	Crumb            = coord.Crumb
 	PathingGrid      = interp.PathingGrid
 	PathingMapData   = interp.PathingMapData
 	PathingMapString = interp.PathingMapString
 	RunResult        = status.RunResult
+	Source           = coord.Source
 )
 
 type PathingMap struct {
-	grid PathingGrid
+	Grid PathingGrid
+}
+
+func NewCrumb(to Coordinate, from Breadcrumb) Crumb {
+	return Crumb{To: to, From: from}
+}
+
+func NewSource(coord Coordinate) Source {
+	return Source{Coord: coord}
 }
 
 func (pmap PathingMap) maxCoord() Coordinate {
-	return slices.MaxFunc(slices.Collect(maps.Keys(pmap.grid)), coord.Compare)
+	return slices.MaxFunc(slices.Collect(maps.Keys(pmap.Grid)), coord.Compare)
 }
 
 func (pmap PathingMap) Height() uint {
@@ -45,16 +57,16 @@ func (pmap PathingMap) Width() uint {
 }
 
 func (pmap PathingMap) String() string {
-	if len(pmap.grid) > 0 {
-		coords := slices.Collect(maps.Keys(pmap.grid))
-		slices.SortFunc(coords, coordinate.Compare)
+	if len(pmap.Grid) > 0 {
+		coords := slices.Collect(maps.Keys(pmap.Grid))
+		slices.SortFunc(coords, coord.Compare)
 		maxCoord := coords[len(coords)-1]
 
 		lines := make([]string, 0, maxCoord.Y)
 		strBuffer := new(strings.Builder)
 
 		for i, coord := range coords {
-			strBuffer.WriteByte(pmap.grid[coord].ToChar())
+			strBuffer.WriteByte(pmap.Grid[coord].ToChar())
 			if (i+1)%int(maxCoord.X+1) == 0 { //nolint:gosec // realistic coords are too small to overflow
 				lines = append(lines, strBuffer.String())
 				strBuffer.Reset()
@@ -79,17 +91,17 @@ func (pmap PathingMap) String() string {
 
 func (pmap PathingMap) InsertPath(coords []Coordinate) {
 	for _, coord := range coords {
-		pmap.grid[coord] = path
+		pmap.Grid[coord] = path
 	}
 }
 
 func (pmap PathingMap) MarkAsGoal(coord Coordinate) {
-	pmap.grid[coord] = goal
+	pmap.Grid[coord] = goal
 }
 
 func (pmap PathingMap) Step(prev Coordinate, next Coordinate) {
-	pmap.grid[prev] = query
-	pmap.grid[next] = self
+	pmap.Grid[prev] = query
+	pmap.Grid[next] = self
 }
 
 func (pmap PathingMap) NeighborsOf(coord Coordinate) []Coordinate {
@@ -103,7 +115,7 @@ func (pmap PathingMap) NeighborsOf(coord Coordinate) []Coordinate {
 	out := make([]Coordinate, 0, len(options))
 
 	for _, c := range options {
-		terrain, isOK := pmap.grid[c]
+		terrain, isOK := pmap.Grid[c]
 		if isOK && terrain.IsPassable() {
 			out = append(out, c)
 		}
