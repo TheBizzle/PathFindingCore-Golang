@@ -1,5 +1,4 @@
-// Package coordinate defines the data structures for coordinates and
-// breadcrumbs.
+// Package coordinate defines the data structures for coordinates and breadcrumbs.
 package coordinate
 
 import "cmp"
