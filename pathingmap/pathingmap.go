@@ -74,6 +74,7 @@ func (pmap PathingMap) String() string {
 		}
 
 		linesWithBorders := make([]string, 0, len(lines))
+		slices.Reverse(lines) // Recall that we reoriented the coordinates when reading --Jason B. (4/28/26)
 		for _, line := range lines {
 			linesWithBorders = append(linesWithBorders, "|"+line+"|\n")
 		}
