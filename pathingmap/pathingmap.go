@@ -92,7 +92,9 @@ func (pmap PathingMap) String() string {
 
 func (pmap PathingMap) InsertPath(coords []Coordinate) {
 	for _, coord := range coords {
-		pmap.Grid[coord] = path
+		if pmap.Grid[coord] != self && pmap.Grid[coord] != goal {
+			pmap.Grid[coord] = path
+		}
 	}
 }
 
