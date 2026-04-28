@@ -98,6 +98,14 @@ func (pmap PathingMap) InsertPath(coords []Coordinate) {
 	}
 }
 
+func (pmap PathingMap) InsertQuery(coords []Coordinate) {
+	for _, coord := range coords {
+		if pmap.Grid[coord] != self && pmap.Grid[coord] != goal {
+			pmap.Grid[coord] = query
+		}
+	}
+}
+
 func (pmap PathingMap) MarkAsGoal(coord Coordinate) {
 	pmap.Grid[coord] = goal
 }
