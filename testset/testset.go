@@ -24,7 +24,8 @@ func pms(delim string, contents string) PathingMapString {
 	return PathingMapString{Contents: contents[1:], Delim: delim + "\n"}
 }
 
-var testMap1 = PathingMapTest{new(14.0), pms("akjshdkjashldjaksdhljakds", "*             G")}
+var testMap1 = PathingMapTest{new(14.0), pms("akjshdkjashldjaksdhljakds", `
+*             G`)}
 
 var testMap2 = PathingMapTest{new(2.0), pms("asdf", `
  *asdf
@@ -74,9 +75,11 @@ DDDDD    D     |
        % %     |
                `)}
 
-var testMap7 = PathingMapTest{nil, pms("|", "*DG")}
+var testMap7 = PathingMapTest{nil, pms("|", `
+*DG`)}
 
-var testMap8 = PathingMapTest{new(14.0), pms("|", "G             *")}
+var testMap8 = PathingMapTest{new(14.0), pms("|", `
+G             *`)}
 
 var testMap9 = PathingMapTest{new(14.0), pms("|", `
 *|
@@ -112,7 +115,8 @@ G|
  |
 *`)}
 
-var testMap11 = PathingMapTest{new(7.0), pms("|", "       *      G")}
+var testMap11 = PathingMapTest{new(7.0), pms("|", `
+       *      G`)}
 
 var testMap12 = PathingMapTest{new(8.0), pms("|", `
  |
